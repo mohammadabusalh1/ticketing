@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+# This to select yaml files for deployment
+deploy:
+  kubectl:
+    manifests:
+      - infra/k8s/*.yaml
+build:
+  local:
+    push: false # Set to true if you want to push images to a registry
+  artifacts: # Select Images for each service to build
+    - image: abusalh/auth
+      context: auth # files that want to observe for changes
+      docker:
+        dockerfile: Dockerfile
+      sync: # Set type of files to observe for changes
+        manual:
+          - src: "src/**/*.ts"
+            dest: "." # Sync files to the root of the container
