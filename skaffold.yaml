@@ -6,12 +6,13 @@ deploy:
     manifests:
       - infra/k8s/*.yaml
 build:
-  # local:
-  #   push: false # Set to true if you want to push images to a registry
-  googleCloudBuild:
-    projectId: ticketing-469010
+  local:
+    push: false # Set to true if you want to push images to a registry
+  # googleCloudBuild:
+  #   projectId: ticketing-469010
   artifacts: # Select Images for each service to build
-    - image: us.gcr.io/ticketing-469010/auth
+    # - image: us.gcr.io/ticketing-469010/auth
+    - image: abusalh/auth
       context: auth # files that want to observe for changes
       docker:
         dockerfile: Dockerfile
