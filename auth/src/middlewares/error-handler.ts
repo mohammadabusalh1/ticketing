@@ -1,6 +1,5 @@
 import e = require("express");
-import { RequestValidationError } from "../errors/request-validation-error.js";
-import { DatabaseConnectionError } from "../errors/database-connection-error.js";
+import { CustomError } from "../errors/custom-error.js";
 
 export const errorHandler = (
   err: Error,
@@ -8,18 +7,8 @@ export const errorHandler = (
   res: e.Response,
   next: e.NextFunction
 ) => {
-  if (err instanceof RequestValidationError) {
+  if (err instanceof CustomError) {
     return res.status(err.statusCode).json({
-      status: "error",
-      message: "Invalid request parameters",
-      errors: err.serializeErrors(),
-    });
-  }
-
-  if (err instanceof DatabaseConnectionError) {
-    return res.status(err.statusCode).json({
-      status: "error",
-      message: err.reason,
       errors: err.serializeErrors(),
     });
   }

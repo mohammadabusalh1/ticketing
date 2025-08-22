@@ -4,14 +4,19 @@ export class DatabaseConnectionError extends CustomError {
   reason = "Database connection error";
   statusCode = 500;
 
-  constructor(public errors: any[] = []) {
+  constructor(message?: string) {
     super();
+    if (message) {
+      this.reason = message;
+    }
     Object.setPrototypeOf(this, DatabaseConnectionError.prototype);
   }
 
   serializeErrors() {
-    return this.errors.map((error) => {
-      return { message: this.reason }; // Correct property name
-    });
+    return [
+      {
+        message: this.reason,
+      },
+    ];
   }
 }

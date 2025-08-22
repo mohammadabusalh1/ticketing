@@ -44,7 +44,7 @@ router.post(
     // Proceed with signup logic (e.g., save to DB)
     // res.send("Signup successful");
 
-    throw new DatabaseConnectionError(["Database connection failed"]);
+    throw new DatabaseConnectionError();
   }
 );
 
