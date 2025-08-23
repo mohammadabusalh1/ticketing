@@ -1,7 +1,7 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error.js";
-import { DatabaseConnectionError } from "../errors/database-connection-error.js";
+import { User } from "../models/user.js";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.post(
       .matches(/[!@#$%^&*(),.?":{}|<>]/)
       .withMessage("Password must contain at least one special character"),
   ],
-  (req: any, res: any) => {
+  async (req: any, res: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       // return res.status(400).json({ errors: errors.array() });
@@ -41,10 +41,19 @@ router.post(
     }
 
     const { email, password } = req.body;
-    // Proceed with signup logic (e.g., save to DB)
-    // res.send("Signup successful");
 
-    throw new DatabaseConnectionError();
+    // Check if email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Email already exists" }] });
+    }
+
+    const user = User.build({ email, password });
+    user.save();
+
+    res.status(201).send(user);
   }
 );
 
