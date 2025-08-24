@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PasswordService } from "../services/password.js";
 
 interface UserAttrs {
   email: string;
@@ -27,6 +28,15 @@ const userShema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+userShema.pre("save", async function (done) {
+  // If the password is modified, we need to hash it
+  if (this.isModified("password")) {
+    const hashPassword = await PasswordService.toHash(this.get("password"));
+    this.set("password", hashPassword);
+  }
+  done();
 });
 
 /**
