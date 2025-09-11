@@ -1,5 +1,10 @@
-import express from "express";
-import { body, validationResult } from "express-validator";
+import express, { type Request, type Response } from "express";
+import { body } from "express-validator";
+import { validateRequest } from "../middlewares/validate-request.js";
+import { User } from "../models/user.js";
+import { BadRequestError } from "../errors/bad-request-error.js";
+import { PasswordService } from "../services/password.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -9,13 +14,37 @@ router.post(
     body("email").isEmail().withMessage("Email must be valid"),
     body("password").trim().notEmpty().withMessage("Password is required"),
   ],
-  (req: any, res: any) => {
+  validateRequest,
+  async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      throw new BadRequestError("Invalid credentials");
     }
-    res.send("Hello World");
+
+    // Compare the provided password with the stored password
+    const passwordsMatch = await PasswordService.compare(
+      existingUser.password,
+      password
+    );
+
+    if (!passwordsMatch) {
+      throw new BadRequestError("Invalid credentials");
+    }
+
+    // Generate JWT
+    const userJwt = jwt.sign(
+      { id: existingUser.id, email: existingUser.email },
+      process.env.JWT_SECRET || "default_jwt_key"
+    );
+
+    // Store it on session object
+    req.session = {
+      jwt: userJwt,
+    };
+
+    res.status(201).send(existingUser);
   }
 );
 

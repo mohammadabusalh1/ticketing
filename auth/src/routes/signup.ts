@@ -1,8 +1,9 @@
 import express from "express";
-import { body, validationResult } from "express-validator";
-import { RequestValidationError } from "../errors/request-validation-error.js";
+import { body } from "express-validator";
 import { User } from "../models/user.js";
 import { BadRequestError } from "../errors/bad-request-error.js";
+import jwt from "jsonwebtoken";
+import { validateRequest } from "../middlewares/validate-request.js";
 
 const router = express.Router();
 
@@ -34,13 +35,8 @@ router.post(
       .matches(/[!@#$%^&*(),.?":{}|<>]/)
       .withMessage("Password must contain at least one special character"),
   ],
+  validateRequest,
   async (req: any, res: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      // return res.status(400).json({ errors: errors.array() });
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
 
     // Check if email already exists
@@ -51,6 +47,17 @@ router.post(
 
     const user = User.build({ email, password });
     user.save();
+
+    // Generate JWT
+    const userJwt = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET || "default_jwt_key"
+    );
+
+    // Store it on session object
+    req.session = {
+      jwt: userJwt,
+    };
 
     res.status(201).send(user);
   }
