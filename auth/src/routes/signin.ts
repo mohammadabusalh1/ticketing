@@ -39,7 +39,8 @@ router.post(
       process.env.JWT_SECRET || "default_jwt_key"
     );
 
-    // Store it on session object
+    // Store it on session object for all domain: tickets.dev
+    // So any request from tickets.dev has this cookie automatically
     req.session = {
       jwt: userJwt,
     };
