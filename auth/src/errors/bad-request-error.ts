@@ -1,4 +1,4 @@
-import { CustomError } from "./custom-error.js";
+import { CustomError } from "./custom-error.ts";
 
 export class BadRequestError extends CustomError {
   statusCode = 400;

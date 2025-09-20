@@ -9,8 +9,8 @@
     // See also https://aka.ms/tsconfig/module
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "target": "ES2022",
-    "types": ["node"],
+    "target": "ESNext",
+    "types": ["node", "jest"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     // For nodejs:
@@ -42,7 +42,9 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*"]
 }

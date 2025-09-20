@@ -1,37 +1,5 @@
-import bodyParser from "body-parser";
-import express from "express";
-const { json } = bodyParser;
 import mongoose from "mongoose";
-
-import { currentUserRouter } from "./routes/current-user.js";
-import { signinRouter } from "./routes/signin.js";
-import { signoutRouter } from "./routes/signout.js";
-import { signupRouter } from "./routes/signup.js";
-import { errorHandler } from "./middlewares/error-handler.js";
-import { NotFoundError } from "./errors/not-found-error.js";
-import cookieSession from "cookie-session";
-import { validateRequest } from "./middlewares/validate-request.js";
-
-const app = express();
-app.use(json());
-app.set("trust proxy", true); // Trust proxy for secure cookies
-app.use(
-  cookieSession({
-    signed: false, // We don't use a signature because the JWT itself is tamper-resistant
-    secure: true, // We use HTTPS because the JWT is sensitive data
-  })
-);
-
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-app.use(signupRouter);
-
-app.all("/{*any}", () => {
-  throw new NotFoundError();
-});
-
-app.use(errorHandler);
+import { app } from "./app.ts";
 
 // Connect to MongoDB
 const start = async () => {

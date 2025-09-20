@@ -1,9 +1,9 @@
 import express from "express";
 import { body } from "express-validator";
-import { User } from "../models/user.js";
-import { BadRequestError } from "../errors/bad-request-error.js";
+import { User } from "../models/user.ts";
+import { BadRequestError } from "../errors/bad-request-error.ts";
 import jwt from "jsonwebtoken";
-import { validateRequest } from "../middlewares/validate-request.js";
+import { validateRequest } from "../middlewares/validate-request.ts";
 
 const router = express.Router();
 
@@ -46,7 +46,7 @@ router.post(
     }
 
     const user = User.build({ email, password });
-    user.save();
+    await user.save();
 
     // Generate JWT
     const userJwt = jwt.sign(

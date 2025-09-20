@@ -1,5 +1,5 @@
 import e = require("express");
-import { CustomError } from "../errors/custom-error.js";
+import { CustomError } from "../errors/custom-error.ts";
 
 /**
  * Handles errors that occur during request processing and sends appropriate HTTP responses.
