@@ -16,7 +16,7 @@ app.set("trust proxy", true); // Trust proxy for secure cookies
 app.use(
   cookieSession({
     signed: false, // We don't use a signature because the JWT itself is tamper-resistant
-    secure: true, // We use HTTPS because the JWT is sensitive data
+    secure: process.env.NODE_ENV !== "test", // We use HTTPS because the JWT is sensitive data
   })
 );
 

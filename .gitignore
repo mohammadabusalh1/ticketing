@@ -60,3 +60,7 @@ Desktop.ini
 
 # Linux
 *~
+
+
+#Ignore cursor AI rules
+.cursor\rules\codacy.mdc

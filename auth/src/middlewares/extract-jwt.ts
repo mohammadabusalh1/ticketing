@@ -6,7 +6,7 @@ interface UserPayload {
   email: string;
 }
 
-// Augment the Express Request interface to include currentUser (line 37)
+// Augment the Express Request interface to include currentUser (line 37) only for type script
 declare global {
   namespace Express {
     interface Request {
