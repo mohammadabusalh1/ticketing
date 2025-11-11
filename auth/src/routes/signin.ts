@@ -1,8 +1,7 @@
 import express, { type Request, type Response } from "express";
 import { body } from "express-validator";
-import { validateRequest } from "../middlewares/validate-request.ts";
+import { validateRequest, BadRequestError } from "@abusalh-tickting/common";
 import { User } from "../models/user.ts";
-import { BadRequestError } from "../errors/bad-request-error.ts";
 import { PasswordService } from "../services/password.ts";
 import jwt from "jsonwebtoken";
 

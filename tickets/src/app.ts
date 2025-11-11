@@ -1,13 +1,15 @@
 import bodyParser from "body-parser";
 import express from "express";
 const { json } = bodyParser;
+import { extractJwt, requireAuth } from "@abusalh-tickting/common";
 
-import { currentUserRouter } from "./routes/current-user.ts";
-import { signinRouter } from "./routes/signin.ts";
-import { signoutRouter } from "./routes/signout.ts";
-import { signupRouter } from "./routes/signup.ts";
 import { errorHandler, NotFoundError } from "@abusalh-tickting/common";
 import cookieSession from "cookie-session";
+
+import { newTicketRouter } from "./routes/new.ts";
+import { showTicketRouter } from "./routes/show.ts";
+import { indexTicketRouter } from "./routes/index.ts";
+import { updateTicketRouter } from "./routes/update.ts";
 
 const app = express();
 app.use(json());
@@ -19,10 +21,13 @@ app.use(
   })
 );
 
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-app.use(signupRouter);
+app.use(extractJwt);
+app.use(requireAuth);
+
+app.use(newTicketRouter);
+app.use(showTicketRouter);
+app.use(indexTicketRouter);
+app.use(updateTicketRouter);
 
 app.all("/{*any}", () => {
   throw new NotFoundError();

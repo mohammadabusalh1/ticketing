@@ -2,13 +2,13 @@ import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
 import { useRouter } from 'next/router';
 
-export default function Signup() {
+export default function Signin() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
 
     const { doRequest, errors } = useRequest({
-        url: '/api/users/signup',
+        url: '/api/users/signin',
         method: 'post',
         body: { email, password },
         onSuccess: () => router.push('/')
@@ -25,7 +25,7 @@ export default function Signup() {
                 <div className="col-md-6">
                     <div className="card mt-5">
                         <div className="card-body">
-                            <h1 className="card-title text-center mb-4">Sign Up</h1>
+                            <h1 className="card-title text-center mb-4">Sign In</h1>
                             <form onSubmit={onSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">
@@ -57,13 +57,13 @@ export default function Signup() {
                                 {errors}
 
                                 <button type="submit" className="btn btn-primary w-100">
-                                    Sign Up
+                                    Sign In
                                 </button>
                             </form>
                             <div className="mt-3 text-center">
                                 <p>
-                                    Already have an account?{' '}
-                                    <a href="/auth/signin">Sign In</a>
+                                    Don't have an account?{' '}
+                                    <a href="/auth/signup">Sign Up</a>
                                 </p>
                             </div>
                         </div>
@@ -73,4 +73,3 @@ export default function Signup() {
         </div>
     );
 }
-

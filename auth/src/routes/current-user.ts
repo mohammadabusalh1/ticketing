@@ -1,6 +1,5 @@
 import express from "express";
-import { extractJwt } from "../middlewares/extract-jwt.ts";
-import { requireAuth } from "../middlewares/require-auth.ts";
+import { extractJwt, requireAuth } from "@abusalh-tickting/common";
 
 const router = express.Router();
 
