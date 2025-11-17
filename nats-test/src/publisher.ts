@@ -1,3 +1,7 @@
+import { Channels } from "./events/channels.js";
+import { TicketCreatedPublisher } from "./events/ticket-created-publisher.js";
+import type { TicketCreatedEvent } from "./types/tikcet-created-type.js";
+
 const nats = require("node-nats-streaming");
 
 // Create a client (called "stan" in NATS terminology)
@@ -12,16 +16,13 @@ const stan = nats.connect("ticketing", "abc", {
 stan.on("connect", () => {
   console.log("Publisher connected to NATS");
 
-  const data = {
+  const data: TicketCreatedEvent["data"] = {
     id: "123",
     title: "Concert",
     price: 20,
   };
 
-  const jsonData = JSON.stringify(data);
-
-  // Publish an event to the "ticket:created" channel
-  stan.publish("ticket:created", jsonData, () => {
-    console.log("Event published");
+  new TicketCreatedPublisher(stan).publish(data, () => {
+    console.log("Event published successfully");
   });
 });
