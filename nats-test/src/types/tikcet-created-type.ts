@@ -1,4 +1,4 @@
-import type { Channels } from "../events/channels.js";
+import Channels = require("../events/channels");
 
 export interface TicketCreatedEvent {
   Channel: Channels.TicketCreated;

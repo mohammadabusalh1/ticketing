@@ -1,12 +1,12 @@
 import type { Stan } from "node-nats-streaming";
-import type { Channels } from "./channels.js";
+import Channels = require("./channels");
 
 interface Event {
   Channel: Channels;
   data: any;
 }
 
-export abstract class Publisher<T extends Event> {
+abstract class Publisher<T extends Event> {
   abstract subject: T["Channel"];
   protected client: Stan;
 
@@ -18,3 +18,5 @@ export abstract class Publisher<T extends Event> {
     this.client.publish(this.subject, JSON.stringify(data), callback);
   }
 }
+
+export = Publisher;

@@ -1,9 +1,9 @@
-import { TicketCreatedListener } from "./events/ticket-created-listener.js";
+import TicketCreatedListener = require("./events/ticket-created-listener");
 
 const nats = require("node-nats-streaming");
 
 // create special id
-const id = Math.floor(Math.random() * 100000);
+const id = Math.floor(Math.random() * 100000).toString();
 
 const stan = nats.connect("ticketing", id, {
   url: "http://localhost:4222",

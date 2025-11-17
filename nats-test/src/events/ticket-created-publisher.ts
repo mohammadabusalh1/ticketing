@@ -1,7 +1,9 @@
-import { Channels } from "./channels.js";
-import type { TicketCreatedEvent } from "../types/tikcet-created-type.js";
-import { Publisher } from "./base-publisher.js";
+import type { TicketCreatedEvent } from "../types/tikcet-created-type";
+import Publisher = require("./base-publisher");
+import Channels = require("./channels");
 
-export class TicketCreatedPublisher extends Publisher<TicketCreatedEvent> {
+class TicketCreatedPublisher extends Publisher<TicketCreatedEvent> {
   subject: Channels.TicketCreated = Channels.TicketCreated;
 }
+
+export = TicketCreatedPublisher;

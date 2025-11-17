@@ -1,12 +1,12 @@
 import type { Message, Stan } from "node-nats-streaming";
-import type { Channels } from "./channels.js";
+import Channels = require("./channels");
 
 interface Event {
   Channel: Channels;
   data: any;
 }
 
-export abstract class Listener<T extends Event> {
+abstract class Listener<T extends Event> {
   abstract subject: T["Channel"];
   abstract queueGroupName: string;
   protected ackWait = 5 * 1000; // 5 seconds
@@ -50,3 +50,5 @@ export abstract class Listener<T extends Event> {
 
   abstract onMessage(data: T["data"], msg: Message): void;
 }
+
+export = Listener;

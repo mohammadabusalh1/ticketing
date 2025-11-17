@@ -1,4 +1,4 @@
-export enum Channels {
+enum Channels {
   TicketCreated = "ticket:created",
   TicketUpdated = "ticket:updated",
   ExpirationComplete = "expiration:complete",
@@ -6,3 +6,5 @@ export enum Channels {
   OrderCreated = "order:created",
   OrderCancelled = "order:cancelled",
 }
+
+export = Channels;

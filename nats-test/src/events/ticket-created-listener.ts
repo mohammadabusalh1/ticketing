@@ -1,9 +1,9 @@
 import type { Message } from "node-nats-streaming";
-import { Listener } from "./base-listener.js";
-import { Channels } from "./channels.js";
-import type { TicketCreatedEvent } from "../types/tikcet-created-type.js";
+import type { TicketCreatedEvent } from "../types/tikcet-created-type";
+import Channels = require("./channels");
+import Listener = require("./base-listener");
 
-export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
+class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   subject: Channels.TicketCreated = Channels.TicketCreated;
   queueGroupName = "orders-service-queue-grou";
   onMessage(data: TicketCreatedEvent["data"], msg: Message): void {
@@ -11,3 +11,5 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
     msg.ack();
   }
 }
+
+export = TicketCreatedListener;
