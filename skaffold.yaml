@@ -38,3 +38,12 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: "." # Sync files to the root of the container
+
+    - image: abusalh/orders
+      context: orders # files that want to observe for changes
+      docker:
+        dockerfile: Dockerfile
+      sync: # Set type of files to observe for changes
+        manual:
+          - src: "src/**/*.ts"
+            dest: "." # Sync files to the root of the container

@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tickets-depl
+  name: orders-depl
   labels:
-    app: tickets
+    app: orders
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tickets
+      app: orders
   template:
     metadata:
       labels:
-        app: tickets
+        app: orders
     spec:
       containers:
-        - name: tickets
-          image: abusalh/tickets
+        - name: orders
+          image: abusalh/orders
           env:
             - name: MONGO_URI
-              value: mongodb://tickets-db-srv:27017/tickets
+              value: mongodb://orders-db-srv:27017/orders
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -39,11 +39,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets-srv
+  name: orders-srv
 spec:
   selector:
-    app: tickets
+    app: orders
   ports:
-    - name: tickets
+    - name: orders
       port: 3000
       targetPort: 3000
